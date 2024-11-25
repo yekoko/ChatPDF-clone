@@ -3,9 +3,13 @@ ChatPDF Clone is an intuitive tool for interacting with PDF content using natura
 ___
 ## Features
 •	PDF Upload: Easily upload PDF files for processing and content extraction.
+
 •	AI-Powered Chat: Ask natural language questions and receive accurate, context-aware answers based on the PDF content.
+
 •	Semantic Search: Quickly find relevant content using Pinecone’s vector database for semantic search.
+
 •	Modern UI: Beautiful, responsive design built with ShadCN and Tailwind CSS.
+
 •	Highly Scalable: Backend powered by LangChain and OpenAI, ensuring efficient and accurate responses.
 ___
 ## Tech Stack
