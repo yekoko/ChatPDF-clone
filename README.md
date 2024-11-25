@@ -14,7 +14,9 @@ ___
 ___
 ## Tech Stack
 •	Frontend: [Next.js](https://nextjs.org/), [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
+
 •	Backend: [LangChain](https://www.langchain.com/), [OpenAI GPT](https://openai.com/), [Pinecone DB](https://www.pinecone.io/)
+
 •	Styling: [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
 ___
 ## Installation
@@ -22,7 +24,9 @@ ___
 #### Prerequisites
 
 •	Node.js v18+
+
 •	npm or yarn
+
 •	API keys for OpenAI and Pinecone
 ___
 #### Steps
@@ -39,7 +43,7 @@ npm install
 ````
 
 **3.	Set up environment variables:**
-Create a .env.local file in the root directory with the following variables:
+Create a .env file in the root directory with the following variables:
 
 ````
 # AWS S3
@@ -69,15 +73,22 @@ ___
 ### Usage
 
 1.Upload PDF: Drag and drop a PDF file or select it from your device.
+
 2.Chat with AI: Ask questions about the document content through a chat interface.
+
 3.Search Content: Use the semantic search feature to quickly find specific sections.
 ___
 ### Key Libraries and Dependencies
 •	**Next.js**: React framework for building fast and scalable web applications.
+
 •	**ShadCN**: UI library for Next.js, tailored with Tailwind CSS.
+
 •	**Tailwind CSS**: Utility-first CSS framework for modern designs.
+
 •	**LangChain**: Framework for conversational AI and interaction logic.
+
 •	**OpenAI API**: GPT models for natural language understanding and generation.
+
 •	**Pinecone DB**: High-performance vector database for semantic search.
 ___
 ### Deployment
@@ -92,6 +103,7 @@ npm start
 
 **3. Deployment options:**
 •	Deploy on [Vercel](https://vercel.com/) for seamless integration with Next.js.
+
 •	Use any cloud platform (e.g., AWS, Netlify, or Render).
 ___
 #### License
@@ -99,8 +111,13 @@ This project is licensed under the MIT License.
 ___
 #### Acknowledgements
 •	[**Next.js**](https://nextjs.org)
+
 •	[**ShadCN**](https://ui.shadcn.com)
+
 •	[**Tailwind CSS**](https://tailwindcss.com)
+
 •	[**LangChain**](https://www.langchain.com)
+
 •	[**OpenAI**](https://openai.com)
+
 •	[**Pinecone**](https://www.pinecone.io)
