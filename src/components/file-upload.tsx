@@ -8,8 +8,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const FileUpload = () => {
+  const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
   const { mutate, isPending } = useMutation({
     mutationFn: async ({
@@ -56,9 +58,11 @@ const FileUpload = () => {
         mutate(data, {
           onSuccess: (data) => {
             console.log(data);
+            const { chatId } = data;
             toast({
               description: "Successfully embeded",
             });
+            router.push(`chat/${chatId}`);
           },
           onError: (error) => {
             toast({

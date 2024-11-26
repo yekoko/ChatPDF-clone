@@ -1,6 +1,8 @@
 ## ChatPDF Clone
+
 ChatPDF Clone is an intuitive tool for interacting with PDF content using natural language. Powered by Next.js, ShadCN, Tailwind CSS, LangChain, OpenAI, and Pinecone DB, this application allows users to upload PDFs and engage in conversational queries about the content.
 ___
+
 ## Features
 •	PDF Upload: Easily upload PDF files for processing and content extraction.
 
@@ -12,6 +14,7 @@ ___
 
 •	Highly Scalable: Backend powered by LangChain and OpenAI, ensuring efficient and accurate responses.
 ___
+
 ## Tech Stack
 •	Frontend: [Next.js](https://nextjs.org/), [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
 
@@ -19,9 +22,10 @@ ___
 
 •	Styling: [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
 ___
+
 ## Installation
 
-#### Prerequisites
+### Prerequisites
 
 •	Node.js v18+
 
@@ -29,12 +33,14 @@ ___
 
 •	API keys for OpenAI and Pinecone
 ___
-#### Steps
+
+### Steps
+
 **1. Clone the repository:**
 
 ````bash
-git clone https://github.com/your-username/chatpdf-clone.git  
-cd chatpdf-clone  
+git clone https://github.com/yekoko/ChatPDF-clone.git
+cd ChatPDF-clone
 ````
 
 **2. Install dependencies:**
@@ -42,7 +48,7 @@ cd chatpdf-clone
 npm install  
 ````
 
-**3.	Set up environment variables:**
+**3. Set up environment variables:**
 Create a .env file in the root directory with the following variables:
 
 ````
@@ -61,24 +67,26 @@ NEXT_PUBLIC_PINECONE_INDEX=your-api-key
 NEXT_PUBLIC_OPENAI_KEY=your-api-key  
 ````
 
-**4.	Run the development server:**
+**4. Run the development server:**
 
 ````
 npm run dev
 ````
 
-#### 5.	Access the application:
+**5. Access the application:**
 Open http://localhost:3000 in your browser.
 ___
-### Usage
 
-1.Upload PDF: Drag and drop a PDF file or select it from your device.
+## Usage
 
-2.Chat with AI: Ask questions about the document content through a chat interface.
+1. Upload PDF: Drag and drop a PDF file or select it from your device.
 
-3.Search Content: Use the semantic search feature to quickly find specific sections.
+2. Chat with AI: Ask questions about the document content through a chat interface.
+
+3. Search Content: Use the semantic search feature to quickly find specific sections.
 ___
-### Key Libraries and Dependencies
+
+## Key Libraries and Dependencies
 •	**Next.js**: React framework for building fast and scalable web applications.
 
 •	**ShadCN**: UI library for Next.js, tailored with Tailwind CSS.
@@ -91,7 +99,9 @@ ___
 
 •	**Pinecone DB**: High-performance vector database for semantic search.
 ___
-### Deployment
+
+## Deployment
+
 **1.Build the application for production:**
 ````
 npm run build
@@ -102,14 +112,17 @@ npm start
 ```
 
 **3. Deployment options:**
+
 •	Deploy on [Vercel](https://vercel.com/) for seamless integration with Next.js.
 
 •	Use any cloud platform (e.g., AWS, Netlify, or Render).
 ___
-#### License
+
+## License
 This project is licensed under the MIT License.
 ___
-#### Acknowledgements
+
+## Acknowledgements
 •	[**Next.js**](https://nextjs.org)
 
 •	[**ShadCN**](https://ui.shadcn.com)

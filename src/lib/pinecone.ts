@@ -12,6 +12,15 @@ type pdfDocs = {
     };
   };
 };
+
+type PineconeRecord = {
+  id: string;
+  values: number[];
+  metadata: {
+    text: string;
+  };
+};
+
 export const getPineconeClient = async () => {
   const pc = new Pinecone({
     apiKey: process.env.NEXT_PUBLIC_PINECONE_DB_API_KEY!,
@@ -34,6 +43,7 @@ export async function embededToPinconeDb(fileKey: string) {
   });
 
   const splitDocs = await textSplitter.splitDocuments(docs);
+
   const embeddings = await Promise.all(
     splitDocs.map((doc) => documentEmbeddings(doc.pageContent))
   );
@@ -42,7 +52,16 @@ export async function embededToPinconeDb(fileKey: string) {
   const pineconeIndex = pineconeClient.index(
     process.env.NEXT_PUBLIC_PINECONE_INDEX!
   );
-  return splitDocs;
+  console.log("Inserting vector into pincone");
+  const records: PineconeRecord[] = splitDocs.map((doc, idx) => ({
+    id: `pdf-chunk-${Date.now()}-${idx}`,
+    values: embeddings[idx],
+    metadata: { text: doc.pageContent },
+  }));
+  const userId = `user-${Date.now()}`;
+  const upsertResponse = await pineconeIndex.namespace(userId).upsert(records);
+  console.log("Successfully upserted records:", upsertResponse);
+  return { userId };
 }
 
 async function embededDocument(doc: Document) {
