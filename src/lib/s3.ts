@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-s3";
 import fs from "fs";
 import path from "path";
-import { isReadable, Readable } from "stream";
+import { Readable } from "stream";
 
 export async function UploadToS3(file: File) {
   try {
@@ -26,6 +26,7 @@ export async function UploadToS3(file: File) {
       Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME!,
       Key: filePath,
       Body: file,
+      ContentType: "application/pdf",
     };
 
     const command = new PutObjectCommand(params);

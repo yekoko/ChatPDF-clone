@@ -1,5 +1,7 @@
+import Link from "next/link";
 import FileUpload from "@/components/file-upload";
-// import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import SignIn from "@/components/auth/sign-in";
 
 export default async function Home() {
   return (
@@ -8,9 +10,7 @@ export default async function Home() {
         <div>
           <h1 className="mr-3 text-5xl font-semibold">Chat with any PDF</h1>
         </div>
-        {/* <div className="flex mt-2">
-            <Button>Go to Chats</Button>
-          </div> */}
+        <SignIn />
         <p className="max-w-xl mt-4 text-lg text-slate-600">
           Join millions of students, researchers and professionals to instantly
           answer questions and understand research with AI

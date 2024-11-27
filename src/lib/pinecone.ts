@@ -29,7 +29,7 @@ export const getPineconeClient = async () => {
   return pc;
 };
 
-export async function embededToPinconeDb(fileKey: string) {
+export async function embededToPinconeDb(fileKey: string, userId: string) {
   console.log("Downloading PDF file from s3");
   const filePath = await downloadFileFromS3(fileKey);
   if (!filePath) throw new Error("Couldn't download from s3");
@@ -58,10 +58,10 @@ export async function embededToPinconeDb(fileKey: string) {
     values: embeddings[idx],
     metadata: { text: doc.pageContent },
   }));
-  const userId = `user-${Date.now()}`;
+//   const userId = `user-${Date.now()}`;
   const upsertResponse = await pineconeIndex.namespace(userId).upsert(records);
   console.log("Successfully upserted records:", upsertResponse);
-  return { userId };
+  return { chatId : userId };
 }
 
 async function embededDocument(doc: Document) {
