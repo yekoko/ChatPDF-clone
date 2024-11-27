@@ -14,7 +14,7 @@ import { storeUserPdfFile } from "@/lib/firebase/firebase";
 
 const FileUpload = () => {
   const { authUser } = useAuthContext();
-  console.log(authUser);
+  // console.log(authUser);
   const userId = authUser?.uid;
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
@@ -66,7 +66,7 @@ const FileUpload = () => {
           data.filePath,
           data.fileName
         );
-       
+
         mutate(
           { ...data, userId: fileId! },
           {
@@ -97,34 +97,36 @@ const FileUpload = () => {
   });
 
   return (
-    <div className="p-5 bg-white rounded-xl shadow-[0_0px_28px_rgba(255,228,230,1)]">
+    <>
       {authUser && (
-        <div
-          {...getRootProps({
-            className:
-              "border-dashed boder-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
-          })}
-        >
-          <input {...getInputProps()} />
-          {isUploading || isPending ? (
-            <Loader className="h-10 w-10 animate-spin" />
-          ) : (
-            <>
-              <Image
-                src="/static/upload-icon.svg"
-                alt="File Upload Icon"
-                width={68}
-                height={83}
-                className="py-8"
-              />
-              <p className="mt-2 text-lg text-slate-600">
-                Click to upload, or drop PDF here
-              </p>
-            </>
-          )}
+        <div className="p-5 bg-white rounded-xl shadow-[0_0px_28px_rgba(255,228,230,1)]">
+          <div
+            {...getRootProps({
+              className:
+                "border-dashed boder-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
+            })}
+          >
+            <input {...getInputProps()} />
+            {isUploading || isPending ? (
+              <Loader className="h-10 w-10 animate-spin" />
+            ) : (
+              <>
+                <Image
+                  src="/static/upload-icon.svg"
+                  alt="File Upload Icon"
+                  width={68}
+                  height={83}
+                  className="py-8"
+                />
+                <p className="mt-2 text-lg text-slate-600">
+                  Click to upload, or drop PDF here
+                </p>
+              </>
+            )}
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

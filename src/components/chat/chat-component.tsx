@@ -2,13 +2,19 @@
 
 import { KeyboardEvent, useEffect, useRef } from "react";
 import { useChat } from "ai/react";
-import { Send } from "lucide-react";
+import { Send, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import ChatLog from "./chat-log";
+import { getFileContext } from "@/lib/get-context";
 
-const ChatComponent = () => {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+const ChatComponent = ({ chatId }: { chatId: string }) => {
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: "/api/chat",
+    body: {
+      chatId,
+    },
+  });
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,6 +23,7 @@ const ChatComponent = () => {
         chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -26,8 +33,9 @@ const ChatComponent = () => {
 
   return (
     <div className="relative flex flex-col h-screen">
-      <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
-        <h3 className="text-lg font-bold">Chat</h3>
+      <div className="flex flex-row sticky top-0 inset-x-0 p-2 bg-white h-fit">
+        <h3 className="text-lg font-bold w-full">Chat</h3>
+        <Trash2 className="m-2 cursor-pointer" width={20} height={20} />
       </div>
       <div
         ref={chatContainerRef}

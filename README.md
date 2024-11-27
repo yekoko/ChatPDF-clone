@@ -1,6 +1,6 @@
 ## ChatPDF Clone
 
-ChatPDF Clone is an intuitive tool for interacting with PDF content using natural language. Powered by Next.js, ShadCN, Tailwind CSS, LangChain, OpenAI, and Pinecone DB, this application allows users to upload PDFs and engage in conversational queries about the content.
+ChatPDF Clone is an intuitive tool for interacting with PDF content using natural language. Powered by Next.js, ShadCN, Tailwind CSS, LangChain, OpenAI, Firebase and Pinecone DB, this application allows users to upload PDFs and engage in conversational queries about the content.
 ___
 
 ## Features
@@ -12,13 +12,13 @@ ___
 
 •	Modern UI: Beautiful, responsive design built with ShadCN and Tailwind CSS.
 
-•	Highly Scalable: Backend powered by LangChain and OpenAI, ensuring efficient and accurate responses.
+•	Highly Scalable: Backend powered by LangChain, OpenAI and Firebase ensuring efficient and accurate responses.
 ___
 
 ## Tech Stack
 •	Frontend: [Next.js](https://nextjs.org/), [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
 
-•	Backend: [LangChain](https://www.langchain.com/), [OpenAI GPT](https://openai.com/), [Pinecone DB](https://www.pinecone.io/)
+•	Backend: [LangChain](https://www.langchain.com/), [OpenAI GPT](https://openai.com/), [Pinecone DB](https://www.pinecone.io/), [Vercel AI Sdk](https://sdk.vercel.ai/), [Firebase](https://firebase.google.com)
 
 •	Styling: [ShadCN](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com)
 ___
@@ -64,7 +64,15 @@ NEXT_PUBLIC_PINECONE_DB_REGION=your-api-key
 NEXT_PUBLIC_PINECONE_INDEX=your-api-key  
 
 # OpenAI
-NEXT_PUBLIC_OPENAI_KEY=your-api-key  
+NEXT_PUBLIC_OPENAI_KEY=your-api-key
+
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-api-key
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-api-key
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-api-key
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-api-key
+NEXT_PUBLIC_FIREBASE_APP_ID=your-api-key
 ````
 
 **4. Run the development server:**
@@ -98,6 +106,10 @@ ___
 •	**OpenAI API**: GPT models for natural language understanding and generation.
 
 •	**Pinecone DB**: High-performance vector database for semantic search.
+
+•   **Firebase**: Using Authentication for secure user login and **Firestore** for scalable real-time NoSQL database storage and synchronization.
+
+•	**Vercel AI SDK**: Simplifies serverless deployment and integrates AI features like streaming APIs, edge functions, and more into Next.js applications.
 ___
 
 ## Deployment
@@ -134,3 +146,8 @@ ___
 •	[**OpenAI**](https://openai.com)
 
 •	[**Pinecone**](https://www.pinecone.io)
+
+•	[**Vercel AI Sdk**](https://sdk.vercel.ai/)
+
+•	[**Firebase**](https://firebase.google.com)
+
