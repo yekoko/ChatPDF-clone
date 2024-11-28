@@ -30,7 +30,7 @@ export const getPineconeClient = async () => {
 };
 
 export async function embededToPinconeDb(fileKey: string, userId: string) {
-  console.log("Downloading PDF file from s3");
+  // console.log("Downloading PDF file from s3");
   const filePath = await downloadFileFromS3(fileKey);
   if (!filePath) throw new Error("Couldn't download from s3");
 
@@ -52,22 +52,23 @@ export async function embededToPinconeDb(fileKey: string, userId: string) {
   const pineconeIndex = pineconeClient.index(
     process.env.NEXT_PUBLIC_PINECONE_INDEX!
   );
-  console.log("Inserting vector into pincone");
+  //console.log("Inserting vector into pincone");
   const records: PineconeRecord[] = splitDocs.map((doc, idx) => ({
     id: `pdf-chunk-${Date.now()}-${idx}`,
     values: embeddings[idx],
     metadata: { text: doc.pageContent },
   }));
-//   const userId = `user-${Date.now()}`;
+  //   const userId = `user-${Date.now()}`;
   const upsertResponse = await pineconeIndex.namespace(userId).upsert(records);
-  console.log("Successfully upserted records:", upsertResponse);
-  return { chatId : userId };
+  //console.log("Successfully upserted records:", upsertResponse);
+  return { chatId: userId };
 }
 
-async function embededDocument(doc: Document) {
-  try {
-  } catch (error) {
-    console.error(`Embedding document error ${error}`);
-    throw error;
-  }
+export async function deleteFromPineconeDb(namespace: string) {
+  const pineconeClient = await getPineconeClient();
+  const pineconeIndex = pineconeClient.index(
+    process.env.NEXT_PUBLIC_PINECONE_INDEX!
+  );
+  await pineconeIndex.namespace(namespace).deleteAll();
+  return { message: "successfully deleted" };
 }

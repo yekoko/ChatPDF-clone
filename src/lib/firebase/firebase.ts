@@ -15,8 +15,8 @@ import {
   collection,
   addDoc,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
-import { any } from "zod";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -93,11 +93,29 @@ export const getUserPdfFiles = async (userId: string) => {
   const userDocRef = doc(db, "users", userId);
   const fileCollectionRef = collection(userDocRef, "files");
   const filesSnapshot = await getDocs(fileCollectionRef);
-  const files: File[]  = filesSnapshot.docs.map((doc) => ({
+  const files: File[] = filesSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
   return files;
+};
+
+export const storeChatMessages = async (
+  userId: string,
+  fileId: string,
+  message: string,
+  agent: string
+) => {
+  const messageRef = doc(db, "users", userId, "files", fileId, "messages");
+};
+
+export const deleteUserFile = async (userId: string, fileId: string) => {
+  try {
+    const fileRef = doc(db, "users", userId, "files", fileId);
+    await deleteDoc(fileRef);
+  } catch (error) {
+    console.error(`File deleting error: ${error}`);
+  }
 };
 
 type SignUpType = {

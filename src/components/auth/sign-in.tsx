@@ -19,7 +19,7 @@ const SignIn = () => {
     const getFiles = async () => {
       if (userId) {
         const data: File[] = await getUserPdfFiles(userId);
-        setFileId(data[0].id);
+        if (data.length > 0) setFileId(data[0].id);
       }
     };
 
@@ -32,11 +32,13 @@ const SignIn = () => {
   return (
     <>
       {authUser ? (
-        <Link href={`/chat/${fileId}`}>
-          <div className="flex mt-2">
-            <Button>Go to chat</Button>
-          </div>
-        </Link>
+        fileId && (
+          <Link href={`/chat/${fileId}`}>
+            <div className="flex mt-2">
+              <Button>Go to chat</Button>
+            </div>
+          </Link>
+        )
       ) : (
         <div className="flex mt-2">
           <Button onClick={signInWithGoogle}>Sign In</Button>

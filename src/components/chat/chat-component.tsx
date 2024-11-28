@@ -35,7 +35,7 @@ const ChatComponent = ({ chatId }: { chatId: string }) => {
     <div className="relative flex flex-col h-screen">
       <div className="flex flex-row sticky top-0 inset-x-0 p-2 bg-white h-fit">
         <h3 className="text-lg font-bold w-full">Chat</h3>
-        <Trash2 className="m-2 cursor-pointer" width={20} height={20} />
+        {/* <Trash2 className="m-2 cursor-pointer" width={20} height={20} /> */}
       </div>
       <div
         ref={chatContainerRef}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useToast } from "@/hooks/use-toast";
 import { UploadToS3 } from "@/lib/s3";
@@ -10,14 +10,29 @@ import { Loader } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/auth.context";
-import { storeUserPdfFile } from "@/lib/firebase/firebase";
+import { storeUserPdfFile, type File } from "@/lib/firebase/firebase";
+import ErrorAlert from "./alert/error-alert";
+import SuccessAlert from "./alert/success-alert";
+import { getUserPdfFiles } from "@/lib/firebase/firebase";
 
 const FileUpload = () => {
   const { authUser } = useAuthContext();
+  const [pdfFiles, setPdfFiles] = useState<File[]>([]);
   // console.log(authUser);
   const userId = authUser?.uid;
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    const getFiles = async () => {
+      if (userId) {
+        const data: File[] = await getUserPdfFiles(userId);
+        setPdfFiles(data);
+      }
+    };
+    getFiles();
+  }, [userId]);
+
   const { mutate, isPending } = useMutation({
     mutationFn: async ({
       filePath,
@@ -37,6 +52,7 @@ const FileUpload = () => {
     },
   });
   const { toast } = useToast();
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: { "application/pdf": [".pdf"] },
     maxFiles: 1,
@@ -46,7 +62,9 @@ const FileUpload = () => {
       if (file.size > maxSizeInBytes) {
         toast({
           variant: "destructive",
-          description: "File is too large! Maximum allowed size is 10 MB.",
+          description: (
+            <ErrorAlert message="File is too large! Maximum allowed size is 10 MB." />
+          ),
         });
         return;
       }
@@ -57,7 +75,7 @@ const FileUpload = () => {
         if (!data?.filePath || !data.fileName) {
           toast({
             variant: "destructive",
-            description: "Something went wrong!",
+            description: <ErrorAlert message=" Something went wrong!" />,
           });
           return;
         }
@@ -73,14 +91,16 @@ const FileUpload = () => {
             onSuccess: (data) => {
               const { chatId } = data;
               toast({
-                description: "Successfully embeded",
+                description: <SuccessAlert message="Successfully created!" />,
               });
-              router.push(`chat/${chatId}`);
+              router.push(`/chat/${chatId}`);
             },
             onError: (error) => {
               toast({
                 variant: "destructive",
-                description: `Embedding file error ${error}`,
+                description: (
+                  <ErrorAlert message={`Embedding file error ${error}`} />
+                ),
               });
             },
           }
@@ -88,7 +108,9 @@ const FileUpload = () => {
       } catch (error) {
         toast({
           variant: "destructive",
-          description: `File upload to s3 error ${error}`,
+          description: (
+            <ErrorAlert message={`File upload to s3 error ${error}`} />
+          ),
         });
       } finally {
         setIsUploading(false);
@@ -98,7 +120,7 @@ const FileUpload = () => {
 
   return (
     <>
-      {authUser && (
+      {authUser && pdfFiles.length < 2 && (
         <div className="p-5 bg-white rounded-xl shadow-[0_0px_28px_rgba(255,228,230,1)]">
           <div
             {...getRootProps({
