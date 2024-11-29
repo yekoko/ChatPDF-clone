@@ -12,14 +12,14 @@ export async function POST(req: NextRequest) {
     const context = await getFileContext(lastMessage.content, chatId);
     let prompt = "";
     if (messages.length <= 1) {
-      // prompt = `Please generate a welcome message based on the context, keeping it under 200 words. Additionally, generate three sample questions based on the context. ${context} . Return the response as structured JSON with fields:
+      // prompt = `Please generate a welcome message based on the context, keeping it under 100 words. Additionally, generate three sample questions based on the context. ${context} . Return the response as structured JSON with fields:
       //         {
       //           "message": "Message text",
       //           "questions": ["1", "2", "3"]
       //         }`;
-      prompt = `Please generate a welcome message based on the context, keeping it under 200 words. ${context}`;
+      prompt = `Please generate a welcome message of under 100 words based on the following context: ${context}. Respond in English only.`;
     } else {
-      prompt = `You are a helpful assistant. Provide a concise response to the user’s question, keeping it under 200 words. ${context}`;
+      prompt = `You are a helpful assistant. Provide a concise response to the user’s question, keeping it under 100 words. ${context}`;
     }
 
     // console.log(context);

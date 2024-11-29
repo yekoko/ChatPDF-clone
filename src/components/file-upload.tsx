@@ -121,7 +121,7 @@ const FileUpload = () => {
   return (
     <>
       {authUser && pdfFiles.length < 2 && (
-        <div className="p-5 bg-white rounded-xl shadow-[0_0px_28px_rgba(255,228,230,1)]">
+        <div className="p-5 bg-white rounded-xl shadow-[0_0px_28px_#c7d2fe]">
           <div
             {...getRootProps({
               className:

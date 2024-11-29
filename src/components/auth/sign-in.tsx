@@ -34,14 +34,21 @@ const SignIn = () => {
       {authUser ? (
         fileId && (
           <Link href={`/chat/${fileId}`}>
-            <div className="flex mt-2">
-              <Button>Go to chat</Button>
+            <div className="flex mt-4">
+              <Button className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold">
+                Go to chat
+              </Button>
             </div>
           </Link>
         )
       ) : (
         <div className="flex mt-2">
-          <Button onClick={signInWithGoogle}>Sign In</Button>
+          <Button
+            onClick={signInWithGoogle}
+            className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold"
+          >
+            Sign In
+          </Button>
         </div>
       )}
     </>

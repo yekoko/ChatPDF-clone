@@ -140,10 +140,13 @@ const ChatSideBar = ({
   };
 
   return (
-    <div className="w-full h-screen p-4 text-center text-gray-200 bg-gray-900">
+    <div className="w-full h-screen p-4 text-center text-gray-200 bg-gray-800">
       <div className="my-5 h-10">
-        <Link href="/">
-          <h1 className="text-white text-2xl text-left font-semibold">
+        <Link className="flex flex-row" href="/">
+          <div className="flex items-center justify-center text-sm text-center text-white bg-gradient-to-t from-sky-400 to-emerald-400 w-8 h-8 overflow-hidden rounded-full">
+            (.|.)
+          </div>
+          <h1 className="text-white text-2xl text-left font-semibold pl-4">
             ChatPDF Clone
           </h1>
         </Link>
@@ -176,7 +179,7 @@ const ChatSideBar = ({
               key={chat.id}
               className={cn(
                 "rounded-lg p-3 flex flex-row items-center",
-                chatId === chat.id ? " bg-gray-500 text-white" : ""
+                chatId === chat.id ? " bg-gray-700 text-white" : ""
               )}
             >
               <Link href={`/chat/${chat.id}`} className="flex flex-row w-[90%]">

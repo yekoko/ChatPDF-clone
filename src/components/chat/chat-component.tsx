@@ -1,18 +1,26 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useRef } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChat } from "ai/react";
 import { Send, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import ChatLog from "./chat-log";
-import { getFileContext } from "@/lib/get-context";
+import { toast } from "@/hooks/use-toast";
+import ErrorAlert from "../alert/error-alert";
 
 const ChatComponent = ({ chatId }: { chatId: string }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [requestHistory, setRequestHistory] = useState<number[]>([]);
+  const rateLimit = 2;
+  const timeLimit = 60000;
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat",
     body: {
       chatId,
+    },
+    onResponse: (response: Response) => {
+      setIsLoading(false);
     },
   });
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -23,27 +31,61 @@ const ChatComponent = ({ chatId }: { chatId: string }) => {
         chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
-  
+
+  useEffect(() => {
+    const currentTime = Date.now();
+    const filterHistory = requestHistory.filter(
+      (time) => currentTime - time < timeLimit
+    );
+    setRequestHistory(filterHistory);
+    console.log(currentTime);
+  }, [timeLimit]);
+
+  const handleRequest = (
+    event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (requestHistory.length >= rateLimit) {
+      toast({
+        variant: "destructive",
+        description: (
+          <ErrorAlert message="You have exceeded the rate limit. Please try again later." />
+        ),
+      });
+      return;
+    }
+    setIsLoading(true);
+    const currentTime = Date.now();
+    setRequestHistory((prevHistory) => [...prevHistory, currentTime]);
+    try {
+      handleSubmit(event);
+    } catch (error) {
+      console.error(`Sending message error ${error}`);
+    }
+  };
+  const handleLocalSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleRequest(event);
+  };
+
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      handleSubmit(event);
+      handleRequest(event);
     }
   };
 
   return (
     <div className="relative flex flex-col h-screen">
-      <div className="flex flex-row sticky top-0 inset-x-0 p-2 bg-white h-fit">
-        <h3 className="text-lg font-bold w-full">Chat</h3>
-        {/* <Trash2 className="m-2 cursor-pointer" width={20} height={20} /> */}
+      <div className="flex flex-row sticky top-0 inset-x-0 p-4 bg-white h-fit">
+        <h3 className="text-xl font-semibold w-full">Chat</h3>
       </div>
       <div
         ref={chatContainerRef}
         className="flex flex-col flex-grow gap-3.5 py-5 px-3 overflow-y-scroll"
       >
-        <ChatLog messages={messages} />
+        <ChatLog messages={messages} isLoading={isLoading} />
       </div>
-      <form onSubmit={handleSubmit} className="relative p-4">
+      <form onSubmit={handleLocalSubmit} className="relative p-4">
         <Textarea
           value={input}
           onChange={handleInputChange}
@@ -52,7 +94,8 @@ const ChatComponent = ({ chatId }: { chatId: string }) => {
         ></Textarea>
         <Button
           type="submit"
-          className="absolute top-6 right-6 h-10 w-10 flex items-center justify-center bg-gradient-to-t rounded-full text-white"
+          className="absolute top-6 right-6 h-10 w-10 flex items-center justify-center bg-gradient-to-t from-sky-400 to-emerald-400 rounded-full text-white"
+          disabled={isLoading}
         >
           <Send />
         </Button>
