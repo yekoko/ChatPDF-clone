@@ -66,7 +66,7 @@ export async function downloadFileFromS3(fileKey: string) {
     const command = new GetObjectCommand(params);
     const response: GetObjectCommandOutput = await s3.send(command);
 
-    const tempDir = path.join(process.cwd(), "public", "temp");
+    const tempDir = path.join(process.cwd(), process.env.TEMP_DIRECTORY!, "temp");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
