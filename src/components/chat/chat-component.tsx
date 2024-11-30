@@ -53,7 +53,8 @@ const ChatComponent = ({
   const handleRequest = (
     event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
   ) => {
-    if (oldMessages.length >= rateLimit) {
+    const userChatlogs = messages.filter((msg) => msg.role === "user");
+    if (userChatlogs.length >= rateLimit) {
       toast({
         variant: "destructive",
         description: (
