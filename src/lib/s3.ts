@@ -67,7 +67,7 @@ export async function downloadFileFromS3(fileKey: string) {
     const response: GetObjectCommandOutput = await s3.send(command);
 
     let tempDir = "";
-    if (process.env.APP_ENV === "production") {
+    if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
       tempDir = path.join("/tmp", "temp");
     } else {
       tempDir = path.join(process.cwd(), process.env.TEMP_DIRECTORY!, "temp");
