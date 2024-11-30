@@ -33,7 +33,7 @@ export async function UploadToS3(file: File) {
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
-    //console.log(`Successfully uploaded to S3: ${filePath}`);
+    console.log(`Successfully uploaded to S3: ${filePath}`);
 
     return {
       filePath,
