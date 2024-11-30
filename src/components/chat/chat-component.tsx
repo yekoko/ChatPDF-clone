@@ -29,7 +29,7 @@ const ChatComponent = ({
       userId,
     },
     initialMessages: oldMessages,
-    onResponse: (response: Response) => {
+    onResponse: () => {
       setIsLoading(false);
     },
   });

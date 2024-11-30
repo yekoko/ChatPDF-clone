@@ -1,6 +1,4 @@
-import Link from "next/link";
 import FileUpload from "@/components/file-upload";
-import { Button } from "@/components/ui/button";
 import SignIn from "@/components/auth/sign-in";
 
 export default async function Home() {

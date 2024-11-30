@@ -59,7 +59,7 @@ export async function embededToPinconeDb(fileKey: string, userId: string) {
     metadata: { text: doc.pageContent },
   }));
   //   const userId = `user-${Date.now()}`;
-  const upsertResponse = await pineconeIndex.namespace(userId).upsert(records);
+  await pineconeIndex.namespace(userId).upsert(records);
   //console.log("Successfully upserted records:", upsertResponse);
   return { chatId: userId };
 }

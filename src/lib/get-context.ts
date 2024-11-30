@@ -15,7 +15,7 @@ const getMatches = async (nameSpace: string, embedding: number[]) => {
     });
     return result.matches || [];
   } catch (error) {
-    console.error("Getting context error ${error}");
+    console.error(`Getting context error ${error}`);
   }
 };
 export const getFileContext = async (query: string, nameSpace: string) => {
