@@ -16,6 +16,9 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
+  serverTimestamp,
+  orderBy,
+  query,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -75,7 +78,7 @@ export const storeUserPdfFile = async (
 
     const fileDocRef = await addDoc(fileCollectionRef, { filePath, fileName });
 
-    console.log("File added successful:", fileDocRef.id);
+    //console.log("File added successful:", fileDocRef.id);
     const data: any = { fileId: fileDocRef.id };
     return data;
   } catch (error) {
@@ -106,15 +109,60 @@ export const storeChatMessages = async (
   message: string,
   agent: string
 ) => {
-  const messageRef = doc(db, "users", userId, "files", fileId, "messages");
+  try {
+    const messageRef = doc(db, "users", userId, "files", fileId);
+    const messageCollection = collection(messageRef, "messages");
+    const messageDocRef = addDoc(messageCollection, {
+      content: message,
+      role: agent,
+      timestamp: serverTimestamp(),
+    });
+    return messageDocRef;
+  } catch (error) {
+    console.error(`Store chat messages error ${error}`);
+  }
+};
+
+export const getMessageList = async (userId: string, fileId: string) => {
+  try {
+    const messageListRef = doc(db, "users", userId, "files", fileId);
+    const messageListCollection = collection(messageListRef, "messages");
+    const messageQuery = query(
+      messageListCollection,
+      orderBy("timestamp", "asc")
+    );
+    const messageListSnapshot = await getDocs(messageQuery);
+    const messages = messageListSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return messages;
+  } catch (error) {
+    console.error(`Getting message list error ${error}`);
+  }
 };
 
 export const deleteUserFile = async (userId: string, fileId: string) => {
   try {
     const fileRef = doc(db, "users", userId, "files", fileId);
+    const messagesRef = collection(
+      db,
+      "users",
+      userId,
+      "files",
+      fileId,
+      "messages"
+    );
+    const messagesSnapshot = await getDocs(messagesRef);
+
+    const deletePromises = messagesSnapshot.docs.map((doc) =>
+      deleteDoc(doc.ref)
+    );
+
+    await Promise.all(deletePromises);
     await deleteDoc(fileRef);
   } catch (error) {
-    console.error(`File deleting error: ${error}`);
+    console.error(`File deleting files and messages error: ${error}`);
   }
 };
 

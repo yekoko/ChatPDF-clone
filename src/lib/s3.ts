@@ -3,6 +3,7 @@ import {
   GetObjectCommand,
   GetObjectCommandOutput,
   PutObjectCommand,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import fs from "fs";
 import path from "path";
@@ -32,7 +33,7 @@ export async function UploadToS3(file: File) {
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
-    console.log(`Successfully uploaded to S3: ${filePath}`);
+    //console.log(`Successfully uploaded to S3: ${filePath}`);
 
     return {
       filePath,
@@ -92,6 +93,29 @@ export async function downloadFileFromS3(fileKey: string) {
     return filePath;
   } catch (error) {
     console.error(`Downloading from s3 error ${error}`);
+    return null;
+  }
+}
+
+export async function deleteFileFromS3(filePath: string) {
+  try {
+    const s3 = new S3Client({
+      region: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_REGION,
+      credentials: {
+        accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+      },
+    });
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME!,
+      Key: filePath,
+    };
+
+    const command = new DeleteObjectCommand(params);
+    await s3.send(command);
+    return { message: "File deleted successfully" };
+  } catch (error) {
+    console.error(`Deleting from s3 error ${error}`);
     return null;
   }
 }

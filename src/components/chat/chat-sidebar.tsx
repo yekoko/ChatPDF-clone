@@ -9,7 +9,7 @@ import {
   CirclePlus,
   Loader,
   Trash2,
-  Loader2,
+  PanelRightOpen,
 } from "lucide-react";
 import { type File, storeUserPdfFile } from "@/lib/firebase/firebase";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const ChatSideBar = ({
   chats,
@@ -31,12 +42,14 @@ const ChatSideBar = ({
   userId,
   onDelete,
   isDeleting,
+  handleShowHideMenu,
 }: {
   chats: File[];
   chatId: string;
   userId: string;
   onDelete: (id: string) => void;
   isDeleting: boolean;
+  handleShowHideMenu: () => void;
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
@@ -140,16 +153,28 @@ const ChatSideBar = ({
   };
 
   return (
-    <div className="w-full h-screen p-4 text-center text-gray-200 bg-gray-800">
-      <div className="my-5 h-10">
-        <Link className="flex flex-row" href="/">
+    <div className="flex flex-col w-full h-screen p-4 text-center text-gray-200 bg-gray-800">
+      <div className="flex flex-row my-2 h-10">
+        <Link className="flex flex-row w-full" href="/">
           <div className="flex items-center justify-center text-sm text-center text-white bg-gradient-to-t from-sky-400 to-emerald-400 w-8 h-8 overflow-hidden rounded-full">
             (.|.)
           </div>
-          <h1 className="text-white text-2xl text-left font-semibold pl-4">
+          <h1 className="text-white text-2xl text-left font-semibold pl-2">
             ChatPDF Clone
           </h1>
         </Link>
+        <div className="cursor-pointer">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PanelRightOpen onClick={handleShowHideMenu} />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Hide Sidebar</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
       <div {...getRootProps()}>
         <input {...getInputProps()} />
@@ -159,7 +184,10 @@ const ChatSideBar = ({
           className="w-full border border-slate-500"
         >
           {isUploading || isPending ? (
-            <Loader className="h-10 w-10 animate-spin" />
+            <>
+              <Loader className="h-10 w-10 animate-spin" />
+              <span className="ml-2 text-sm">Uploading....</span>
+            </>
           ) : (
             <>
               <CirclePlus className="mr-2 w-4 h-4" />
@@ -169,11 +197,12 @@ const ChatSideBar = ({
         </Button>
       </div>
       {isDeleting ? (
-        <div className="w-full text-center">
-          <Loader2 className="w-full h-10 mt-3 animate-spin" />
+        <div className="flex flex-row flex-grow mt-4 text-center justify-center items-center">
+          <Loader className="w-7 h-7 animate-spin" />
+          <span className="ml-2 mt-1 text-md">File Deleting</span>
         </div>
       ) : (
-        <div className="flex flex-col gap-2 mt-4">
+        <div className="flex flex-col flex-grow gap-2 mt-4">
           {chats.map((chat) => (
             <div
               key={chat.id}
@@ -192,10 +221,28 @@ const ChatSideBar = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Trash2
-                      className="w-4 h-4 ml-2 cursor-pointer"
-                      onClick={() => onDelete(chat.id)}
-                    />
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <Trash2 className="w-4 h-4 ml-2 cursor-pointer" />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Do you really want to delete this file?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently delete the chat and PDF
+                            content.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => onDelete(chat.id)}>
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Delete Chat</p>
@@ -206,6 +253,14 @@ const ChatSideBar = ({
           ))}
         </div>
       )}
+      <div>
+        <ul className="flex flex-row text-sm text-left">
+          <Link href="/">
+            <li className="pr-3">Home</li>
+          </Link>
+          <li className="text-gray-400">Chat</li>
+        </ul>
+      </div>
     </div>
   );
 };

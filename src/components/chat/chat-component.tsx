@@ -2,23 +2,33 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChat } from "ai/react";
-import { Send, Trash2 } from "lucide-react";
+import { Send } from "lucide-react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import ChatLog from "./chat-log";
 import { toast } from "@/hooks/use-toast";
 import ErrorAlert from "../alert/error-alert";
 
-const ChatComponent = ({ chatId }: { chatId: string }) => {
+const ChatComponent = ({
+  chatId,
+  userId,
+  oldMessages,
+}: {
+  chatId: string;
+  userId: string;
+  oldMessages: [];
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [requestHistory, setRequestHistory] = useState<number[]>([]);
-  const rateLimit = 2;
-  const timeLimit = 60000;
+  // const [requestHistory, setRequestHistory] = useState<number[]>([]);
+  const rateLimit = 10;
+  // const timeLimit = 60000;
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat",
     body: {
       chatId,
+      userId,
     },
+    initialMessages: oldMessages,
     onResponse: (response: Response) => {
       setIsLoading(false);
     },
@@ -32,19 +42,18 @@ const ChatComponent = ({ chatId }: { chatId: string }) => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const currentTime = Date.now();
-    const filterHistory = requestHistory.filter(
-      (time) => currentTime - time < timeLimit
-    );
-    setRequestHistory(filterHistory);
-    console.log(currentTime);
-  }, [timeLimit]);
+  // useEffect(() => {
+  //   const currentTime = Date.now();
+  //   const filterHistory = requestHistory.filter(
+  //     (time) => currentTime - time < timeLimit
+  //   );
+  //   setRequestHistory(filterHistory);
+  // }, [timeLimit]);
 
   const handleRequest = (
     event: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>
   ) => {
-    if (requestHistory.length >= rateLimit) {
+    if (oldMessages.length >= rateLimit) {
       toast({
         variant: "destructive",
         description: (
@@ -53,9 +62,18 @@ const ChatComponent = ({ chatId }: { chatId: string }) => {
       });
       return;
     }
+    // if (requestHistory.length >= rateLimit) {
+    //   toast({
+    //     variant: "destructive",
+    //     description: (
+    //       <ErrorAlert message="You have exceeded the rate limit. Please try again later." />
+    //     ),
+    //   });
+    //   return;
+    // }
     setIsLoading(true);
-    const currentTime = Date.now();
-    setRequestHistory((prevHistory) => [...prevHistory, currentTime]);
+    // const currentTime = Date.now();
+    // setRequestHistory((prevHistory) => [...prevHistory, currentTime]);
     try {
       handleSubmit(event);
     } catch (error) {
