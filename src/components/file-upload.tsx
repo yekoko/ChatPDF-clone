@@ -140,7 +140,7 @@ const FileUpload = () => {
                   height={83}
                   className="py-8"
                 />
-                <p className="mt-2 text-lg text-slate-600">
+                <p className="mt-2 md:text-lg text-sm text-slate-600">
                   Click to upload, or drop PDF here
                 </p>
               </>

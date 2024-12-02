@@ -35,7 +35,7 @@ const SignIn = () => {
         fileId && (
           <Link href={`/chat/${fileId}`}>
             <div className="flex mt-4">
-              <Button className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold">
+              <Button className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold md:text-sm text-xs">
                 Go to chat
               </Button>
             </div>
@@ -45,7 +45,7 @@ const SignIn = () => {
         <div className="flex mt-2">
           <Button
             onClick={signInWithGoogle}
-            className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold"
+            className="bg-gradient-to-r from-indigo-200 to-emerald-200 hover:from-indigo-300 hover:to-emerald-400 text-slate-700 font-semibold md:text-sm text-xs"
           >
             Sign In
           </Button>

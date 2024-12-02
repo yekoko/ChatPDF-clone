@@ -2,7 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useChat } from "ai/react";
-import { Send } from "lucide-react";
+import { Menu, Send } from "lucide-react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import ChatLog from "./chat-log";
@@ -13,10 +13,14 @@ const ChatComponent = ({
   chatId,
   userId,
   oldMessages,
+  previewFileName,
+  handleClickMenu,
 }: {
   chatId: string;
   userId: string;
   oldMessages: [];
+  previewFileName: string;
+  handleClickMenu: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // const [requestHistory, setRequestHistory] = useState<number[]>([]);
@@ -96,7 +100,14 @@ const ChatComponent = ({
   return (
     <div className="relative flex flex-col h-screen">
       <div className="flex flex-row sticky top-0 inset-x-0 p-4 bg-white h-fit">
-        <h3 className="text-xl font-semibold w-full">Chat</h3>
+        <h3 className="text-xl font-semibold w-full hidden md:block">Chat</h3>
+        <Menu
+          className="w-6 h-6 mr-3 block md:hidden"
+          onClick={handleClickMenu}
+        />
+        <h3 className="text-lg font-semibold w-full block md:hidden">
+          {previewFileName}
+        </h3>
       </div>
       <div
         ref={chatContainerRef}
@@ -110,10 +121,11 @@ const ChatComponent = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder="Type your message here."
+          className="md:text-lg text-sm"
         ></Textarea>
         <Button
           type="submit"
-          className="absolute top-6 right-6 h-10 w-10 flex items-center justify-center bg-gradient-to-t from-sky-400 to-emerald-400 rounded-full text-white"
+          className="absolute top-6 right-6 md:h-10 h-8 md:w-10 w-8 flex items-center justify-center bg-gradient-to-t from-sky-400 to-emerald-400 rounded-full text-white"
           disabled={isLoading}
         >
           <Send />

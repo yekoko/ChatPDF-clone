@@ -23,7 +23,8 @@ const HomeChat = ({ id }: { id: string }) => {
   const [previewFile, setPreviewFile] = useState<string>("");
   const [filePath, setFilePath] = useState<string>("");
   const [previewFileName, setPreviewFileName] = useState<string>("");
-  const [isShowMenu, setIsSetShowMenu] = useState<boolean>(true);
+  const [isShowMenu, setIsShowMenu] = useState<boolean>(true);
+  const [isShowMobileMenu, setIsShowMobileMenu] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [messages, setMessages] = useState<[]>([]);
   const { authUser } = useAuthContext();
@@ -74,7 +75,11 @@ const HomeChat = ({ id }: { id: string }) => {
   };
 
   const handleShowHideMenu = () => {
-    setIsSetShowMenu(!isShowMenu);
+    setIsShowMenu((prevState) => !prevState);
+  };
+
+  const handleShowHideMobileMenu = () => {
+    setIsShowMobileMenu((prevState) => !prevState);
   };
 
   return (
@@ -82,7 +87,7 @@ const HomeChat = ({ id }: { id: string }) => {
       {authUser && (
         <div className="flex w-full max-h-screen overflow-hidden">
           {isShowMenu && (
-            <div className="flex-[3] max-w-xs">
+            <div className="flex-[3] max-w-xs  hidden md:block">
               <ChatSideBar
                 chats={pdfFiles}
                 chatId={id}
@@ -90,10 +95,24 @@ const HomeChat = ({ id }: { id: string }) => {
                 onDelete={handleDeleteChat}
                 isDeleting={isDeleting}
                 handleShowHideMenu={handleShowHideMenu}
+                handleClickMobileMenu={handleShowHideMobileMenu}
               />
             </div>
           )}
-          <div className="flex-[5] max-h-screen p-2">
+          {isShowMobileMenu && (
+            <div className="flex-[5] block md:hidden">
+              <ChatSideBar
+                chats={pdfFiles}
+                chatId={id}
+                userId={userId!}
+                onDelete={handleDeleteChat}
+                isDeleting={isDeleting}
+                handleShowHideMenu={handleShowHideMenu}
+                handleClickMobileMenu={handleShowHideMobileMenu}
+              />
+            </div>
+          )}
+          <div className="flex-[5] max-h-screen p-2 hidden md:block">
             <div className="flex flex-row my-2">
               {!isShowMenu && (
                 <TooltipProvider>
@@ -116,13 +135,26 @@ const HomeChat = ({ id }: { id: string }) => {
               <PdfViewer filePath={previewFile} isDeleting={isDeleting} />
             )}
           </div>
-          <div className="flex-[5] border-l-4 text-sm border-l-slate-200">
+          <div className="flex-[5] border-l-4 text-sm border-l-slate-200 hidden md:block">
             <ChatComponent
               chatId={id}
               userId={userId!}
               oldMessages={messages}
+              previewFileName={previewFileName}
+              handleClickMenu={handleShowHideMobileMenu}
             />
           </div>
+          {!isShowMobileMenu && (
+            <div className="flex-[5] border-l-4 text-sm border-l-slate-200 block md:hidden">
+              <ChatComponent
+                chatId={id}
+                userId={userId!}
+                oldMessages={messages}
+                previewFileName={previewFileName}
+                handleClickMenu={handleShowHideMobileMenu}
+              />
+            </div>
+          )}
         </div>
       )}
     </>

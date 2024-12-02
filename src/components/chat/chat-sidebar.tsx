@@ -10,6 +10,7 @@ import {
   Loader,
   Trash2,
   PanelRightOpen,
+  X,
 } from "lucide-react";
 import { type File, storeUserPdfFile } from "@/lib/firebase/firebase";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,7 @@ const ChatSideBar = ({
   onDelete,
   isDeleting,
   handleShowHideMenu,
+  handleClickMobileMenu,
 }: {
   chats: File[];
   chatId: string;
@@ -50,6 +52,7 @@ const ChatSideBar = ({
   onDelete: (id: string) => void;
   isDeleting: boolean;
   handleShowHideMenu: () => void;
+  handleClickMobileMenu: () => void;
 }) => {
   const [isUploading, setIsUploading] = useState(false);
   const router = useRouter();
@@ -163,7 +166,7 @@ const ChatSideBar = ({
             ChatPDF Clone
           </h1>
         </Link>
-        <div className="cursor-pointer">
+        <div className="cursor-pointer hidden md:block">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -174,6 +177,12 @@ const ChatSideBar = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+        </div>
+        <div
+          className="cursor-pointer block md:hidden"
+          onClick={handleClickMobileMenu}
+        >
+          <X className="w-6 h-6" />
         </div>
       </div>
       <div {...getRootProps()}>
@@ -211,11 +220,13 @@ const ChatSideBar = ({
                 chatId === chat.id ? " bg-gray-700 text-white" : ""
               )}
             >
-              <Link href={`/chat/${chat.id}`} className="flex flex-row w-[90%]">
-                <MessageCircle className="mr-2" />
-                <p className="w-full overflow-hidden text-sm text-left truncate whitespace-nowrap text-ellipsis">
-                  {chat.fileName}
-                </p>
+              <Link href={`/chat/${chat.id}`}>
+                <div className="flex flex-row" onClick={handleClickMobileMenu}>
+                  <MessageCircle className="mr-2" />
+                  <p className="w-full overflow-hidden text-sm text-left truncate whitespace-nowrap text-ellipsis pt-[2px]">
+                    {chat.fileName}
+                  </p>
+                </div>
               </Link>
 
               <TooltipProvider>
