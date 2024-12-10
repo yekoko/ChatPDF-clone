@@ -216,14 +216,14 @@ const ChatSideBar = ({
             <div
               key={chat.id}
               className={cn(
-                "rounded-lg p-3 flex flex-row items-center",
+                "rounded-lg p-3 flex items-center",
                 chatId === chat.id ? " bg-gray-700 text-white" : ""
               )}
             >
               <Link href={`/chat/${chat.id}`}>
-                <div className="flex flex-row" onClick={handleClickMobileMenu}>
+                <div className="flex" onClick={handleClickMobileMenu}>
                   <MessageCircle className="mr-2" />
-                  <p className="w-full overflow-hidden text-sm text-left truncate whitespace-nowrap text-ellipsis pt-[2px]">
+                  <p className="max-w-[200px] overflow-hidden text-sm text-left truncate whitespace-nowrap text-ellipsis pt-[2px]">
                     {chat.fileName}
                   </p>
                 </div>

@@ -121,7 +121,7 @@ const ChatComponent = ({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder="Type your message here."
-          className="md:text-lg text-sm"
+          className="md:text-md text-sm"
         ></Textarea>
         <Button
           type="submit"
