@@ -58,7 +58,7 @@ const FileUpload = () => {
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
-      const maxSizeInBytes = 10 * 1024 * 1024;
+      const maxSizeInBytes = 10 * 1000000;
       if (file.size > maxSizeInBytes) {
         toast({
           variant: "destructive",

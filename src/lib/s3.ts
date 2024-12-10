@@ -70,7 +70,7 @@ export async function downloadFileFromS3(fileKey: string) {
     if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
       tempDir = path.join("/tmp", "temp");
     } else {
-      tempDir = path.join(process.cwd(), process.env.TEMP_DIRECTORY!, "temp");
+      tempDir = path.join(process.cwd(), "public", "temp");
     }
 
     if (!fs.existsSync(tempDir)) {
