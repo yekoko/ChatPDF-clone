@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       //           "message": "Message text",
       //           "questions": ["1", "2", "3"]
       //         }`;
-      prompt = `Please generate a welcome message of under 100 words based on the following context: ${context}. Respond in English only.`;
+      prompt = `Please generate a welcome message of under 100 words based on the following context: ${context}.`;
     } else {
       prompt = `You are a helpful assistant. Provide a concise response to the user’s question, keeping it under 100 words. ${context}.`;
     }
